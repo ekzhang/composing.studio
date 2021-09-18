@@ -1,10 +1,6 @@
 import { Flex, Icon, Text } from "@chakra-ui/react";
 import { VscRemote } from "react-icons/vsc";
 
-const version = process.env.REACT_APP_SHA
-  ? process.env.REACT_APP_SHA.slice(0, 7)
-  : "development";
-
 function Footer() {
   return (
     <Flex h="22px" bgColor="#0071c3" color="white">
@@ -17,7 +13,7 @@ function Footer() {
         align="center"
       >
         <Icon as={VscRemote} mb={-0.5} mr={1} />
-        <Text fontSize="xs">Rustpad ({version})</Text>
+        <Text fontSize="xs">Rustpad</Text>
       </Flex>
     </Flex>
   );
