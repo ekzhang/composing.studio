@@ -159,7 +159,7 @@ function EditorPage() {
               variant="outline"
               bgColor={darkMode ? "#3c3c3c" : "white"}
               borderColor={darkMode ? "#3c3c3c" : "white"}
-              value={`${window.location.origin}/#${id}`}
+              value={`${window.location.origin}/${id}`}
             />
             <InputRightElement width="3.5rem">
               <Button
@@ -194,19 +194,20 @@ function EditorPage() {
             About
           </Heading>
           <Text fontSize="sm" mb={1.5}>
-            <strong>Rustpad</strong> is an open-source collaborative text editor
-            based on the <em>operational transformation</em> algorithm.
+            <strong>Composing Studio</strong> is an open-source collaborative
+            music composition tool thats anyone write music together in real
+            time.
           </Text>
           <Text fontSize="sm" mb={1.5}>
-            Share a link to this pad with others, and they can edit from their
-            browser while seeing your changes in real time.
+            Share a link to this studio with others, and they'll be able to edit
+            from their browser while seeing your changes in real time.
           </Text>
           <Text fontSize="sm" mb={1.5}>
             Built using Rust and TypeScript. See the{" "}
             <Link
               color="blue.600"
               fontWeight="semibold"
-              href="https://github.com/ekzhang/rustpad"
+              href="https://github.com/ekzhang/composing.studio"
               isExternal
             >
               GitHub repository
