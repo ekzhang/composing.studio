@@ -25,6 +25,9 @@ function Score({ notes }: ScoreProps) {
 
     if (loaded && beginPlaying) {
       // some funky logic bc we can't tell if a play is in progress
+      // should be fixed. the current issue is that
+      // if i remove the check on loaded, it begins processing audio 
+      // as soon as the page loads, and then crashes
       synth
         .init({
           audioContext: myContext,
