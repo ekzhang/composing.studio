@@ -27,6 +27,7 @@ import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
 import User from "../components/User";
+import Score from "../components/Score";
 
 function getWsUri(id: string) {
   return (
@@ -107,10 +108,6 @@ function EditorPage() {
   }
 
   const [abcString, setAbcString] = useState("");
-
-  useEffect(() => {
-    abcjs.renderAbc("paper", abcString, {});
-  }, [abcString]);
 
   return (
     <Flex
@@ -247,7 +244,7 @@ function EditorPage() {
               </Box>
 
               <Box flex={1}>
-                <div id="paper"></div>
+                <Score notes={abcString} />
               </Box>
             </Flex>
           </Box>
