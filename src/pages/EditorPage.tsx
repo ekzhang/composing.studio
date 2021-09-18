@@ -21,11 +21,8 @@ import abcjs from "abcjs";
 import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
 import useStorage from "use-local-storage-state";
 import Editor from "@monaco-editor/react";
-import { Registry } from "monaco-textmate";
-import { wireTmGrammars } from "monaco-editor-textmate";
 import type { editor } from "monaco-editor/esm/vs/editor/editor.api";
 import animals from "../lib/animals.json";
-import ABC from "../lib/abc.json";
 import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
@@ -240,25 +237,11 @@ function EditorPage() {
                     automaticLayout: true,
                     fontSize: 13,
                   }}
-                  onMount={async (editor, monaco) => {
-                    setEditor(editor);
-
-                    const registry = new Registry({
-                      getGrammarDefinition: async (scopeName: any) => {
-                        return {
-                          format: "json",
-                          content: ABC,
-                        };
-                      },
-                    });
-
-                    // map of monaco "language id's" to TextMate scopeNames
-                    const grammars = new Map();
-                    grammars.set("abc", "source.abc");
-                    await wireTmGrammars(monaco, registry, grammars, editor);
-                  }}
+                  onMount={(editor) => setEditor(editor)}
                   onChange={(text) => {
-                    typeof text === "string" && setAbcString(text);
+                    if (text !== undefined) {
+                      setAbcString(text);
+                    }
                   }}
                 />
               </Box>
