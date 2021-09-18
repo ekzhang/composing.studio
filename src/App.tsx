@@ -123,7 +123,10 @@ function App() {
 
   const [abcString, setAbcString] = useState("" as string | undefined);
 
-  abcjs.renderAbc("paper", abcString, {});
+  useEffect(() => {
+    abcjs.renderAbc("paper", abcString, {});
+  }, [abcString])
+  
 
   return (
     <Flex
