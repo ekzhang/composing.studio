@@ -270,7 +270,7 @@ function App() {
                     await wireTmGrammars(monaco, registry, grammars, editor);
                   }}
                   onChange={(text) => {
-                    (typeof text === 'string')  && setAbcString(text);
+                    typeof text === "string" && setAbcString(text);
                   }}
                 />
               </Box>
