@@ -23,7 +23,7 @@ jobs:
 
       - run: npx prettier --check .
 
-      - run: npm run lint
+      - run: npx eslint --max-warnings 0 src
 
   rustfmt:
     name: Rustfmt
