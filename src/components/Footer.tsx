@@ -13,7 +13,7 @@ function Footer() {
         align="center"
       >
         <Icon as={VscRemote} mb={-0.5} mr={1} />
-        <Text fontSize="xs">Rustpad</Text>
+        <Text fontSize="xs">Composing Studio</Text>
       </Flex>
     </Flex>
   );
