@@ -17,6 +17,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import abcjs from "abcjs";
 import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
 import useStorage from "use-local-storage-state";
 import Editor, { loader } from "@monaco-editor/react";
@@ -119,6 +120,12 @@ function App() {
   function handleDarkMode() {
     setDarkMode(!darkMode);
   }
+
+  const [abcString, setAbcString] = useState("");
+
+  useEffect(() => {
+    abcjs.renderAbc("paper", abcString, {});
+  }, [abcString]);
 
   return (
     <Flex
@@ -236,32 +243,42 @@ function App() {
             <Text>{id}</Text>
           </HStack>
           <Box flex={1} minH={0}>
-            <Editor
-              theme={darkMode ? "vs-dark" : "vs"}
-              language="abc"
-              options={{
-                automaticLayout: true,
-                fontSize: 13,
-              }}
-              onMount={async (editor, monaco) => {
-                setEditor(editor);
+            <Flex flex={1} minW={0} h="100%" direction="row" overflow="hidden">
+              <Box flex={1}>
+                <Editor
+                  theme={darkMode ? "vs-dark" : "vs"}
+                  language="abc"
+                  options={{
+                    automaticLayout: true,
+                    fontSize: 13,
+                  }}
+                  onMount={async (editor, monaco) => {
+                    setEditor(editor);
 
-                const registry = new Registry({
-                  getGrammarDefinition: async (scopeName) => {
-                    return {
-                      format: "json",
-                      content: ABC,
-                    };
-                  },
-                });
+                    const registry = new Registry({
+                      getGrammarDefinition: async (scopeName: any) => {
+                        return {
+                          format: "json",
+                          content: ABC,
+                        };
+                      },
+                    });
 
-                // map of monaco "language id's" to TextMate scopeNames
-                const grammars = new Map();
-                grammars.set("abc", "source.abc");
+                    // map of monaco "language id's" to TextMate scopeNames
+                    const grammars = new Map();
+                    grammars.set("abc", "source.abc");
+                    await wireTmGrammars(monaco, registry, grammars, editor);
+                  }}
+                  onChange={(text) => {
+                    typeof text === "string" && setAbcString(text);
+                  }}
+                />
+              </Box>
 
-                await wireTmGrammars(monaco, registry, grammars, editor);
-              }}
-            />
+              <Box flex={1}>
+                <div id="paper"></div>
+              </Box>
+            </Flex>
           </Box>
         </Flex>
       </Flex>
