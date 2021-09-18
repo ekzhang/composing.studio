@@ -125,8 +125,7 @@ function App() {
 
   useEffect(() => {
     abcjs.renderAbc("paper", abcString, {});
-  }, [abcString])
-  
+  }, [abcString]);
 
   return (
     <Flex
@@ -246,40 +245,40 @@ function App() {
           <Box flex={1} minH={0}>
             <Flex flex={1} minW={0} h="100%" direction="row" overflow="hidden">
               <Box flex={1}>
-              <Editor
-              theme={darkMode ? "vs-dark" : "vs"}
-              language="abc"
-              options={{
-                automaticLayout: true,
-                fontSize: 13,
-              }}
-              onMount={async (editor, monaco) => {
-                setEditor(editor);
+                <Editor
+                  theme={darkMode ? "vs-dark" : "vs"}
+                  language="abc"
+                  options={{
+                    automaticLayout: true,
+                    fontSize: 13,
+                  }}
+                  onMount={async (editor, monaco) => {
+                    setEditor(editor);
 
-                const registry = new Registry({
-                  getGrammarDefinition: async (scopeName: any) => {
-                    return {
-                      format: "json",
-                      content: ABC,
-                    };
-                  },
-                });
+                    const registry = new Registry({
+                      getGrammarDefinition: async (scopeName: any) => {
+                        return {
+                          format: "json",
+                          content: ABC,
+                        };
+                      },
+                    });
 
-                // map of monaco "language id's" to TextMate scopeNames
-                const grammars = new Map();
-                grammars.set("abc", "source.abc");
-                await wireTmGrammars(monaco, registry, grammars, editor);
-              }
-            }
-            onChange={(text) => {setAbcString(text);}}
-            />
+                    // map of monaco "language id's" to TextMate scopeNames
+                    const grammars = new Map();
+                    grammars.set("abc", "source.abc");
+                    await wireTmGrammars(monaco, registry, grammars, editor);
+                  }}
+                  onChange={(text) => {
+                    setAbcString(text);
+                  }}
+                />
               </Box>
 
               <Box flex={1}>
                 <div id="paper"></div>
               </Box>
             </Flex>
-            
           </Box>
         </Flex>
       </Flex>
