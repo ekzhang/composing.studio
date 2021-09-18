@@ -14,12 +14,15 @@
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@monaco-editor/react": "^4.2.2",
+    "cstudio-wasm": "file:./cstudio-wasm/pkg",
     "framer-motion": "^4.1.17",
+    "monaco-editor-textmate": "^3.0.0",
+    "monaco-textmate": "^3.0.1",
+    "onigasm": "^2.2.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-scripts": "4.0.3",
-    "cstudio-wasm": "file:./cstudio-wasm/pkg",
     "use-local-storage-state": "^11.0.0"
   },
   "devDependencies": {

@@ -12,7 +12,6 @@ import {
   InputGroup,
   InputRightElement,
   Link,
-  Select,
   Stack,
   Switch,
   Text,
@@ -20,17 +19,28 @@ import {
 } from "@chakra-ui/react";
 import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
 import useStorage from "use-local-storage-state";
-import Editor from "@monaco-editor/react";
+import Editor, { loader } from "@monaco-editor/react";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
-import languages from "./languages.json";
 import animals from "./animals.json";
 import Rustpad, { UserInfo } from "./rustpad";
 import useHash from "./useHash";
 import ConnectionStatus from "./ConnectionStatus";
 import Footer from "./Footer";
 import User from "./User";
+import { loadWASM } from "onigasm";
+import { Registry } from "monaco-textmate";
+import { wireTmGrammars } from "monaco-editor-textmate";
+import ABC from "./abc.json";
 
 set_panic_hook();
+initABC();
+
+async function initABC() {
+  await loadWASM(`/static/onigasm.wasm`); // See https://www.npmjs.com/package/onigasm#light-it-up
+
+  const monaco = await loader.init();
+  monaco.languages.register({ id: "abc" });
+}
 
 function getWsUri(id: string) {
   return (
@@ -50,7 +60,6 @@ function generateHue() {
 
 function App() {
   const toast = useToast();
-  const [language, setLanguage] = useState("plaintext");
   const [connection, setConnection] = useState<
     "connected" | "disconnected" | "desynchronized"
   >("disconnected");
@@ -81,11 +90,6 @@ function App() {
             duration: null,
           });
         },
-        onChangeLanguage: (language) => {
-          if (languages.includes(language)) {
-            setLanguage(language);
-          }
-        },
         onChangeUsers: setUsers,
       });
       return () => {
@@ -100,27 +104,6 @@ function App() {
       rustpad.current?.setInfo({ name, hue });
     }
   }, [connection, name, hue]);
-
-  function handleChangeLanguage(language: string) {
-    setLanguage(language);
-    if (rustpad.current?.setLanguage(language)) {
-      toast({
-        title: "Language updated",
-        description: (
-          <>
-            All users are now editing in{" "}
-            <Text as="span" fontWeight="semibold">
-              {language}
-            </Text>
-            .
-          </>
-        ),
-        status: "info",
-        duration: 2000,
-        isClosable: true,
-      });
-    }
-  }
 
   async function handleCopy() {
     await navigator.clipboard.writeText(`${window.location.origin}/#${id}`);
@@ -170,23 +153,6 @@ function App() {
             <Heading size="sm">Dark Mode</Heading>
             <Switch isChecked={darkMode} onChange={handleDarkMode} />
           </Flex>
-
-          <Heading mt={4} mb={1.5} size="sm">
-            Language
-          </Heading>
-          <Select
-            size="sm"
-            bgColor={darkMode ? "#3c3c3c" : "white"}
-            borderColor={darkMode ? "#3c3c3c" : "white"}
-            value={language}
-            onChange={(event) => handleChangeLanguage(event.target.value)}
-          >
-            {languages.map((lang) => (
-              <option key={lang} value={lang} style={{ color: "black" }}>
-                {lang}
-              </option>
-            ))}
-          </Select>
 
           <Heading mt={4} mb={1.5} size="sm">
             Share Link
@@ -272,12 +238,29 @@ function App() {
           <Box flex={1} minH={0}>
             <Editor
               theme={darkMode ? "vs-dark" : "vs"}
-              language={language}
+              language="abc"
               options={{
                 automaticLayout: true,
                 fontSize: 13,
               }}
-              onMount={(editor) => setEditor(editor)}
+              onMount={async (editor, monaco) => {
+                setEditor(editor);
+
+                const registry = new Registry({
+                  getGrammarDefinition: async (scopeName) => {
+                    return {
+                      format: "json",
+                      content: ABC,
+                    };
+                  },
+                });
+
+                // map of monaco "language id's" to TextMate scopeNames
+                const grammars = new Map();
+                grammars.set("abc", "source.abc");
+
+                await wireTmGrammars(monaco, registry, grammars, editor);
+              }}
             />
           </Box>
         </Flex>
