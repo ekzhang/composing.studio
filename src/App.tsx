@@ -18,6 +18,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import abcjs from "abcjs";
 import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
 import useStorage from "use-local-storage-state";
 import Editor from "@monaco-editor/react";
@@ -136,6 +137,10 @@ function App() {
   function handleDarkMode() {
     setDarkMode(!darkMode);
   }
+
+  const [abcString, setAbcString] = useState("" as string | undefined);
+
+  abcjs.renderAbc("paper", abcString, {});
 
   return (
     <Flex
@@ -270,15 +275,24 @@ function App() {
             <Text>{id}</Text>
           </HStack>
           <Box flex={1} minH={0}>
-            <Editor
-              theme={darkMode ? "vs-dark" : "vs"}
-              language={language}
-              options={{
-                automaticLayout: true,
-                fontSize: 13,
-              }}
-              onMount={(editor) => setEditor(editor)}
-            />
+            <Flex flex={1} minW={0} h="100%" direction="row" overflow="hidden">
+              <Box flex={1}>
+                <Editor
+                  theme={darkMode ? "vs-dark" : "vs"}
+                  language={language}
+                  options={{
+                    automaticLayout: true,
+                    fontSize: 13,
+                  }}
+                  onMount={(editor) => {setEditor(editor);}}
+                  onChange={(text) => {setAbcString(text);}}
+                />
+              </Box>
+
+              <Box flex={1}>
+                <div id="paper"></div>
+              </Box>
+            </Flex>
           </Box>
         </Flex>
       </Flex>
