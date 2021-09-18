@@ -9,8 +9,34 @@ on:
       - main
 
 jobs:
-  format_lint:
-    name: Prettier and ESLint
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - uses: jetli/wasm-pack-action@v0.3.0
+        with:
+          version: latest
+
+      - run: wasm-pack build cstudio-wasm
+
+      - run: npm ci
+
+      - run: npx eslint --max-warnings 0 src
+
+      - run: npm run build
+
+  format:
+    name: Prettier
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,8 +48,6 @@ jobs:
       - run: npm ci --only=dev
 
       - run: npx prettier --check .
-
-      - run: npx eslint --max-warnings 0 src
 
   rustfmt:
     name: Rustfmt
