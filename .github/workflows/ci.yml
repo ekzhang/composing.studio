@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: "14"
 
-      - run: npm ci
+      - run: npm ci --only=dev
 
       - run: npx prettier --check .
 
