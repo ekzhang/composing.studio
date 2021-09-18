@@ -1,3 +1,4 @@
+/// <reference path="./../react-split-grid.d.ts" />
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -30,6 +31,8 @@ import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
 import User from "../components/User";
+import Split from "react-split";
+import './temp.css'; //CSS for testing
 
 function getWsUri(id: string) {
   return (
@@ -232,40 +235,47 @@ function EditorPage() {
           </HStack>
           <Box flex={1} minH={0}>
             <Flex flex={1} minW={0} h="100%" direction="row" overflow="hidden">
-              <Box flex={1}>
-                <Editor
-                  theme={darkMode ? "vs-dark" : "vs"}
-                  language="abc"
-                  options={{
-                    automaticLayout: true,
-                    fontSize: 13,
-                  }}
-                  onMount={async (editor, monaco) => {
-                    setEditor(editor);
+              
 
-                    const registry = new Registry({
-                      getGrammarDefinition: async (scopeName: any) => {
-                        return {
-                          format: "json",
-                          content: ABC,
-                        };
-                      },
-                    });
+                <Split
+                  className="split"
+                  minSize={200}
+                >
+                    <Box>
+                      <Editor
+                        theme={darkMode ? "vs-dark" : "vs"}
+                        language="abc"
+                        options={{
+                          automaticLayout: true,
+                          fontSize: 13,
+                        }}
+                        onMount={async (editor, monaco) => {
+                          setEditor(editor);
 
-                    // map of monaco "language id's" to TextMate scopeNames
-                    const grammars = new Map();
-                    grammars.set("abc", "source.abc");
-                    await wireTmGrammars(monaco, registry, grammars, editor);
-                  }}
-                  onChange={(text) => {
-                    typeof text === "string" && setAbcString(text);
-                  }}
-                />
-              </Box>
+                          const registry = new Registry({
+                            getGrammarDefinition: async (scopeName: any) => {
+                              return {
+                                format: "json",
+                                content: ABC,
+                              };
+                            },
+                          });
 
-              <Box flex={1}>
-                <div id="paper"></div>
-              </Box>
+                          // map of monaco "language id's" to TextMate scopeNames
+                          const grammars = new Map();
+                          grammars.set("abc", "source.abc");
+                          await wireTmGrammars(monaco, registry, grammars, editor);
+                        }}
+                        onChange={(text) => {
+                          typeof text === "string" && setAbcString(text);
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <div id="paper"></div>
+                    </Box>
+                </Split>
+
             </Flex>
           </Box>
         </Flex>
