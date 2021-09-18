@@ -31,6 +31,8 @@ import { loadWASM } from "onigasm";
 import { Registry } from "monaco-textmate";
 import { wireTmGrammars } from "monaco-editor-textmate";
 import ABC from "./abc.json";
+import VSConverted from "./vs-converted.json";
+import VSConvertedDark from "./vs-converted-dark.json";
 
 set_panic_hook();
 initABC();
@@ -40,6 +42,8 @@ async function initABC() {
 
   const monaco = await loader.init();
   monaco.languages.register({ id: "abc" });
+  monaco.editor.defineTheme("vs-converted", VSConverted as any);
+  monaco.editor.defineTheme("vs-converted-dark", VSConvertedDark as any);
 }
 
 function getWsUri(id: string) {
@@ -237,7 +241,7 @@ function App() {
           </HStack>
           <Box flex={1} minH={0}>
             <Editor
-              theme={darkMode ? "vs-dark" : "vs"}
+              theme={darkMode ? "vs-converted-dark" : "vs-converted"}
               language="abc"
               options={{
                 automaticLayout: true,
@@ -254,10 +258,14 @@ function App() {
                     };
                   },
                 });
-
                 // map of monaco "language id's" to TextMate scopeNames
                 const grammars = new Map();
                 grammars.set("abc", "source.abc");
+
+                // monaco's built-in themes aren't powereful enough to handle TM tokens
+                // https://github.com/Nishkalkashyap/monaco-vscode-textmate-theme-converter#monaco-vscode-textmate-theme-converter
+
+                // ... use `monaco-vscode-textmate-theme-converter` to convert vs code theme and pass the parsed object here
 
                 await wireTmGrammars(monaco, registry, grammars, editor);
               }}
