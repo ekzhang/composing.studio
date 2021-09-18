@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+  "cstudio-server",
+  "cstudio-wasm",
+]
