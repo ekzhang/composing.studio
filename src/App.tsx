@@ -121,7 +121,7 @@ function App() {
     setDarkMode(!darkMode);
   }
 
-  const [abcString, setAbcString] = useState("" as string | undefined);
+  const [abcString, setAbcString] = useState("");
 
   useEffect(() => {
     abcjs.renderAbc("paper", abcString, {});
@@ -270,7 +270,7 @@ function App() {
                     await wireTmGrammars(monaco, registry, grammars, editor);
                   }}
                   onChange={(text) => {
-                    setAbcString(text);
+                    text && setAbcString(text);
                   }}
                 />
               </Box>
