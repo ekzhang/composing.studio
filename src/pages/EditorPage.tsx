@@ -142,6 +142,7 @@ function EditorPage() {
       overflow="hidden"
       bgColor={darkMode ? "#1e1e1e" : "white"}
       color={darkMode ? "#cbcaca" : "inherit"}
+      className={darkMode ? "dark-mode" : undefined}
     >
       <Box
         flexShrink={0}
@@ -294,7 +295,7 @@ function EditorPage() {
               </Box>
 
               <Box overflowX="auto">
-                <Score notes={abcString} />
+                <Score notes={abcString} darkMode={darkMode} />
               </Box>
             </Split>
           </Box>
