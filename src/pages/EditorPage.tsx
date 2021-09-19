@@ -101,7 +101,7 @@ function EditorPage() {
   }, [connection, name, hue]);
 
   async function handleCopy() {
-    await navigator.clipboard.writeText(`${window.location.origin}/#${id}`);
+    await navigator.clipboard.writeText(`${window.location.origin}/${id}`);
     toast({
       title: "Copied!",
       description: "Link copied to clipboard",
