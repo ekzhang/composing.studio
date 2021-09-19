@@ -77,9 +77,10 @@ const cursorControl = new CursorControl("#paper");
 
 type ScoreProps = {
   notes: string;
+  darkMode: boolean;
 };
 
-function Score({ notes }: ScoreProps) {
+function Score({ notes, darkMode }: ScoreProps) {
   useEffect(() => {
     synthControl.load("#audio", cursorControl, {
       displayLoop: true,
@@ -116,7 +117,13 @@ function Score({ notes }: ScoreProps) {
   // TODO: Make this component reusable by generating random unique IDs.
   return (
     <Stack p={3}>
-      <Box id="paper" borderWidth="1px" borderColor="gray.500" rounded="sm" />
+      <Box
+        id="paper"
+        borderWidth="1px"
+        borderColor="gray.500"
+        rounded="sm"
+        bgColor={darkMode ? "whiteAlpha.900" : "initial"}
+      />
       <Box id="audio" />
     </Stack>
   );
