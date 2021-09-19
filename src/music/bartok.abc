@@ -1,0 +1,10 @@
+T: Excerpt from Viola Concerto
+A: Béla Bartók
+L: 1/4
+Q: 80
+V: Viola nm="Viola"
+K:C clef=alto
+!mf! (Cc) (B3/2 G/) | (c//B//G/) (B/c/) (B3/2 G/) | (_B/4 G/4 F/) (G/2 B/2) ^F (_E/ =F/) | (_E/C/_B,) C2 |]
+V: Piano nm="Piano"
+K:C clef=bass
+!p! (C,4 | (C,4) | (C,4) | C,4) |]

@@ -17,10 +17,17 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
+import {
+  VscChevronRight,
+  VscFolderOpened,
+  VscGist,
+  VscRepoPull,
+} from "react-icons/vsc";
+import { useDebounce } from "use-debounce";
 import useStorage from "use-local-storage-state";
 import Editor from "@monaco-editor/react";
 import type { editor } from "monaco-editor/esm/vs/editor/editor.api";
+import raw from "raw.macro";
 import animals from "../lib/animals.json";
 import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
@@ -94,7 +101,7 @@ function EditorPage() {
   }, [connection, name, hue]);
 
   async function handleCopy() {
-    await navigator.clipboard.writeText(`${window.location.origin}/#${id}`);
+    await navigator.clipboard.writeText(`${window.location.origin}/${id}`);
     toast({
       title: "Copied!",
       description: "Link copied to clipboard",
@@ -108,7 +115,32 @@ function EditorPage() {
     setDarkMode(!darkMode);
   }
 
-  const [abcString, setAbcString] = useState("");
+  function handleLoadSample() {
+    const samples = [
+      raw("../music/fluteDuet.abc"),
+      raw("../music/fugue.abc"),
+      raw("../music/bartok.abc"),
+      raw("../music/twinkle.abc"),
+    ];
+
+    if (editor?.getModel()) {
+      const model = editor.getModel()!;
+      model.pushEditOperations(
+        editor.getSelections(),
+        [
+          {
+            range: model.getFullModelRange(),
+            text: samples[Math.floor(Math.random() * samples.length)],
+          },
+        ],
+        () => null
+      );
+      editor.setPosition({ column: 0, lineNumber: 0 });
+    }
+  }
+
+  const [text, setText] = useState("");
+  const [abcString] = useDebounce(text, 100, { maxWait: 1000 });
 
   return (
     <Flex
@@ -117,6 +149,7 @@ function EditorPage() {
       overflow="hidden"
       bgColor={darkMode ? "#1e1e1e" : "white"}
       color={darkMode ? "#cbcaca" : "inherit"}
+      className={darkMode ? "dark-mode" : undefined}
     >
       <Box
         flexShrink={0}
@@ -190,7 +223,17 @@ function EditorPage() {
           </Heading>
           <Text fontSize="sm" mb={1.5}>
             <strong>Composing Studio</strong> is an open-source collaborative
-            music composition tool that lets people write music together.
+            web application that lets people write and engrave music together
+            using{" "}
+            <Link
+              color="blue.600"
+              fontWeight="semibold"
+              href="https://abcnotation.com/"
+              isExternal
+            >
+              ABC notation
+            </Link>
+            .
           </Text>
           <Text fontSize="sm" mb={1.5}>
             Share a link to this studio with others, and they'll be able to edit
@@ -208,6 +251,19 @@ function EditorPage() {
             </Link>{" "}
             for details.
           </Text>
+
+          <Button
+            size="sm"
+            colorScheme={darkMode ? "whiteAlpha" : "blackAlpha"}
+            borderColor={darkMode ? "purple.400" : "purple.600"}
+            color={darkMode ? "purple.400" : "purple.600"}
+            variant="outline"
+            leftIcon={<VscRepoPull />}
+            mt={1}
+            onClick={handleLoadSample}
+          >
+            Load an example
+          </Button>
         </Container>
         <Flex flex={1} minW={0} h="100%" direction="column" overflow="hidden">
           <HStack
@@ -239,14 +295,14 @@ function EditorPage() {
                   onMount={(editor) => setEditor(editor)}
                   onChange={(text) => {
                     if (text !== undefined) {
-                      setAbcString(text);
+                      setText(text);
                     }
                   }}
                 />
               </Box>
 
               <Box overflowX="auto">
-                <Score notes={abcString} />
+                <Score notes={abcString} darkMode={darkMode} />
               </Box>
             </Split>
           </Box>

@@ -15,6 +15,10 @@
   cursor: col-resize;
 }
 
+.dark-mode .gutter {
+  filter: invert(90%);
+}
+
 .overflow {
   overflow: hidden;
 }
