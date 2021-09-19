@@ -18,6 +18,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
+import { useDebounce } from "use-debounce";
 import useStorage from "use-local-storage-state";
 import Editor from "@monaco-editor/react";
 import type { editor } from "monaco-editor/esm/vs/editor/editor.api";
@@ -108,7 +109,8 @@ function EditorPage() {
     setDarkMode(!darkMode);
   }
 
-  const [abcString, setAbcString] = useState("");
+  const [text, setText] = useState("");
+  const [abcString] = useDebounce(text, 100, { maxWait: 1000 });
 
   return (
     <Flex
@@ -239,7 +241,7 @@ function EditorPage() {
                   onMount={(editor) => setEditor(editor)}
                   onChange={(text) => {
                     if (text !== undefined) {
-                      setAbcString(text);
+                      setText(text);
                     }
                   }}
                 />

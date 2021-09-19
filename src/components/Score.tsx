@@ -19,8 +19,6 @@ function Score({ notes }: ScoreProps) {
   const [beginPlaying, setBeginPlaying] = useState(false);
   const [tempo, setTempo] = useState(60);
 
-  myContext.resume();
-
   useEffect(() => {
     let visualObj = abcjs.renderAbc("paper", notes, { responsive: "resize" });
 
