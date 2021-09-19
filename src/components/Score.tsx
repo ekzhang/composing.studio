@@ -13,9 +13,9 @@ type ScoreProps = {
 };
 
 const myContext = new AudioContext();
-function Score({ notes }: ScoreProps) {
-  const synth = new abcjs.synth.CreateSynth();
+const synth = new abcjs.synth.CreateSynth();
 
+function Score({ notes }: ScoreProps) {
   const [beginPlaying, setBeginPlaying] = useState(false);
   const [tempo, setTempo] = useState(60);
 
