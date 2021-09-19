@@ -32,7 +32,7 @@ import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
 import User from "../components/User";
 import Split from "react-split";
-import './temp.css'; //CSS for testing
+import './Split.css';
 
 function getWsUri(id: string) {
   return (
@@ -115,7 +115,7 @@ function EditorPage() {
   const [abcString, setAbcString] = useState("");
 
   useEffect(() => {
-    abcjs.renderAbc("paper", abcString, {});
+    abcjs.renderAbc("paper", abcString, { responsive: "resize" })
   }, [abcString]);
 
   return (
@@ -233,50 +233,47 @@ function EditorPage() {
             <Icon as={VscGist} fontSize="md" color="purple.500" />
             <Text>{id}</Text>
           </HStack>
-          <Box flex={1} minH={0}>
-            <Flex flex={1} minW={0} h="100%" direction="row" overflow="hidden">
-              
+          <Box flex={1} minH={0} h="100%" overflow="hidden">
+            
+            <Split
+              className="split"
+              minSize={50}
+            >
+              <Box>
+                <Editor
+                  theme={darkMode ? "vs-dark" : "vs"}
+                  language="abc"
+                  options={{
+                    automaticLayout: true,
+                    fontSize: 13,
+                  }}
+                  onMount={async (editor, monaco) => {
+                    setEditor(editor);
 
-                <Split
-                  className="split"
-                  minSize={200}
-                >
-                    <Box>
-                      <Editor
-                        theme={darkMode ? "vs-dark" : "vs"}
-                        language="abc"
-                        options={{
-                          automaticLayout: true,
-                          fontSize: 13,
-                        }}
-                        onMount={async (editor, monaco) => {
-                          setEditor(editor);
+                    const registry = new Registry({
+                      getGrammarDefinition: async (scopeName: any) => {
+                        return {
+                          format: "json",
+                          content: ABC,
+                        };
+                      },
+                    });
 
-                          const registry = new Registry({
-                            getGrammarDefinition: async (scopeName: any) => {
-                              return {
-                                format: "json",
-                                content: ABC,
-                              };
-                            },
-                          });
+                    // map of monaco "language id's" to TextMate scopeNames
+                    const grammars = new Map();
+                    grammars.set("abc", "source.abc");
+                    await wireTmGrammars(monaco, registry, grammars, editor);
+                  }}
+                  onChange={(text) => {
+                    typeof text === "string" && setAbcString(text);
+                  }}
+                />
+              </Box>
+              <Box overflowX="auto">
+                <div id="paper"></div>
+              </Box>
+            </Split>
 
-                          // map of monaco "language id's" to TextMate scopeNames
-                          const grammars = new Map();
-                          grammars.set("abc", "source.abc");
-                          await wireTmGrammars(monaco, registry, grammars, editor);
-                        }}
-                        onChange={(text) => {
-                          typeof text === "string" && setAbcString(text);
-                        }}
-                      />
-                    </Box>
-                    <Box>
-                      <div id="paper"></div>
-                    </Box>
-                </Split>
-
-            </Flex>
           </Box>
         </Flex>
       </Flex>
