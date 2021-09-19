@@ -12,26 +12,19 @@ type ScoreProps = {
   notes: string;
 };
 
+const myContext = new AudioContext();
 function Score({ notes }: ScoreProps) {
   const synth = new abcjs.synth.CreateSynth();
-  const myContext = new AudioContext();
-  const synthControl = new abcjs.synth.SynthController(); // not used, but required for pause/resume functionality
 
-  const [loaded, setLoaded] = useState(false);
   const [beginPlaying, setBeginPlaying] = useState(false);
   const [tempo, setTempo] = useState(60);
 
-  useEffect(() => {
-    if (loaded) {
-      // documentation says to do this in case the browser bans immediate audio playing. may not be necessary
-      myContext.resume();
-    }
-  }, [loaded]);
+  myContext.resume();
 
   useEffect(() => {
     let visualObj = abcjs.renderAbc("paper", notes, {});
 
-    if (loaded && beginPlaying) {
+    if (beginPlaying) {
       // some funky logic bc we can't tell if a play is in progress
       // should be fixed. the current issue is that
       // if i remove the check on loaded, it begins processing audio
@@ -48,7 +41,7 @@ function Score({ notes }: ScoreProps) {
           });
         });
     }
-  }, [notes, loaded, beginPlaying, tempo]);
+  }, [notes, beginPlaying, tempo]);
 
   return (
     <div>
@@ -57,7 +50,6 @@ function Score({ notes }: ScoreProps) {
         color="blue"
         onClick={() => {
           setBeginPlaying(true);
-          setLoaded(true);
         }}
         variant="outline"
       >
