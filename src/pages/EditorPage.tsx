@@ -190,7 +190,7 @@ function EditorPage() {
           </Heading>
           <Text fontSize="sm" mb={1.5}>
             <strong>Composing Studio</strong> is an open-source collaborative
-            music composition tool that lets anyone write music together.
+            music composition tool that lets people write music together.
           </Text>
           <Text fontSize="sm" mb={1.5}>
             Share a link to this studio with others, and they'll be able to edit

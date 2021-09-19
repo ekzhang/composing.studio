@@ -17,6 +17,7 @@
     "abcjs": "^5.12.0",
     "cstudio-wasm": "file:./cstudio-wasm/pkg",
     "framer-motion": "^4.1.17",
+    "project-name-generator": "^2.1.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
@@ -26,6 +27,7 @@
     "use-local-storage-state": "^11.0.0"
   },
   "devDependencies": {
+    "@types/project-name-generator": "^2.1.1",
     "@types/react": "^17.0.21",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.1.9",
