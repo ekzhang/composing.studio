@@ -1,6 +1,7 @@
+import { useEffect } from "react";
+import { Box, Stack } from "@chakra-ui/react";
 import abcjs from "abcjs";
 import "abcjs/abcjs-audio.css";
-import { useEffect } from "react";
 
 class CursorControl {
   // This demonstrates two methods of indicating where the music is.
@@ -114,10 +115,10 @@ function Score({ notes }: ScoreProps) {
 
   // TODO: Make this component reusable by generating random unique IDs.
   return (
-    <div>
-      <div id="audio"></div>
-      <div id="paper"></div>
-    </div>
+    <Stack p={3}>
+      <Box id="paper" borderWidth="1px" borderColor="gray.500" rounded="sm" />
+      <Box id="audio" />
+    </Stack>
   );
 }
 
