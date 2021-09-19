@@ -1,4 +1,3 @@
-/// <reference path="./../react-split-grid.d.ts" />
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -32,7 +31,7 @@ import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
 import User from "../components/User";
 import Split from "react-split";
-import './Split.css';
+import "./Split.css";
 
 function getWsUri(id: string) {
   return (
@@ -115,7 +114,7 @@ function EditorPage() {
   const [abcString, setAbcString] = useState("");
 
   useEffect(() => {
-    abcjs.renderAbc("paper", abcString, { responsive: "resize" })
+    abcjs.renderAbc("paper", abcString, { responsive: "resize" });
   }, [abcString]);
 
   return (
@@ -234,11 +233,7 @@ function EditorPage() {
             <Text>{id}</Text>
           </HStack>
           <Box flex={1} minH={0} h="100%" overflow="hidden">
-            
-            <Split
-              className="split"
-              minSize={50}
-            >
+            <Split className="split" minSize={50}>
               <Box>
                 <Editor
                   theme={darkMode ? "vs-dark" : "vs"}
@@ -273,7 +268,6 @@ function EditorPage() {
                 <div id="paper"></div>
               </Box>
             </Split>
-
           </Box>
         </Flex>
       </Flex>
