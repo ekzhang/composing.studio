@@ -1,0 +1,17 @@
+T:Duet in G
+T:1. Allegro
+C:Fran\ccois Devienne
+Z:Transcribed by Frank Nordberg - http://www.musicaviva.com
+M:C
+L:1/8
+Q:136
+K:G
+V:Flute_1
+g4 (fd)(ef)|g2g2a2a2|b4 (ag)(ab)|g2g2d4|
+V:Flute_2
+(BG)(AB) c4|(Bd)(BG) (FA)(FD)|(GA)(Bc) d2d2|B4 (BA)(GA)|
+%
+V:Flute_1
+g4 (ag)(fe)|(fe)(fg) (ab)(^c'd')|b2g2e2^c2|(e4d4):|
+V:Flute_2
+(BG)(AB) ^c4|(d^c)(de) (fg)(af)|g2B2G2E2|(G4F4):|

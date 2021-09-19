@@ -17,11 +17,17 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
+import {
+  VscChevronRight,
+  VscFolderOpened,
+  VscGist,
+  VscRepoPull,
+} from "react-icons/vsc";
 import { useDebounce } from "use-debounce";
 import useStorage from "use-local-storage-state";
 import Editor from "@monaco-editor/react";
 import type { editor } from "monaco-editor/esm/vs/editor/editor.api";
+import raw from "raw.macro";
 import animals from "../lib/animals.json";
 import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
@@ -107,6 +113,23 @@ function EditorPage() {
 
   function handleDarkMode() {
     setDarkMode(!darkMode);
+  }
+
+  function handleLoadSample() {
+    if (editor?.getModel()) {
+      const model = editor.getModel()!;
+      model.pushEditOperations(
+        editor.getSelections(),
+        [
+          {
+            range: model.getFullModelRange(),
+            text: raw("../music/fluteDuet.abc"),
+          },
+        ],
+        () => null
+      );
+      editor.setPosition({ column: 0, lineNumber: 0 });
+    }
   }
 
   const [text, setText] = useState("");
@@ -210,6 +233,19 @@ function EditorPage() {
             </Link>{" "}
             for details.
           </Text>
+
+          <Button
+            size="sm"
+            colorScheme={darkMode ? "whiteAlpha" : "blackAlpha"}
+            borderColor={darkMode ? "purple.400" : "purple.600"}
+            color={darkMode ? "purple.400" : "purple.600"}
+            variant="outline"
+            leftIcon={<VscRepoPull />}
+            mt={1}
+            onClick={handleLoadSample}
+          >
+            Load an example
+          </Button>
         </Container>
         <Flex flex={1} minW={0} h="100%" direction="column" overflow="hidden">
           <HStack
