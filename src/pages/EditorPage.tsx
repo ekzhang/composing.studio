@@ -234,6 +234,7 @@ function EditorPage() {
                   options={{
                     automaticLayout: true,
                     fontSize: 13,
+                    wordWrap: "on",
                   }}
                   onMount={(editor) => setEditor(editor)}
                   onChange={(text) => {
