@@ -17,7 +17,6 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import abcjs from "abcjs";
 import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
 import useStorage from "use-local-storage-state";
 import Editor from "@monaco-editor/react";
@@ -27,6 +26,7 @@ import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
 import User from "../components/User";
+import Score from "../components/Score";
 import Split from "react-split";
 import "./Split.css";
 
@@ -109,10 +109,6 @@ function EditorPage() {
   }
 
   const [abcString, setAbcString] = useState("");
-
-  useEffect(() => {
-    abcjs.renderAbc("paper", abcString, { responsive: "resize" });
-  }, [abcString]);
 
   return (
     <Flex
@@ -247,8 +243,9 @@ function EditorPage() {
                   }}
                 />
               </Box>
+
               <Box overflowX="auto">
-                <div id="paper"></div>
+                <Score notes={abcString} />
               </Box>
             </Split>
           </Box>
