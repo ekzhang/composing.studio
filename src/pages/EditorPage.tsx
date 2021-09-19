@@ -27,6 +27,8 @@ import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
 import User from "../components/User";
+import Split from "react-split";
+import "./Split.css";
 
 function getWsUri(id: string) {
   return (
@@ -109,7 +111,7 @@ function EditorPage() {
   const [abcString, setAbcString] = useState("");
 
   useEffect(() => {
-    abcjs.renderAbc("paper", abcString, {});
+    abcjs.renderAbc("paper", abcString, { responsive: "resize" });
   }, [abcString]);
 
   return (
@@ -227,9 +229,9 @@ function EditorPage() {
             <Icon as={VscGist} fontSize="md" color="purple.500" />
             <Text>{id}</Text>
           </HStack>
-          <Box flex={1} minH={0}>
-            <Flex flex={1} minW={0} h="100%" direction="row" overflow="hidden">
-              <Box flex={1}>
+          <Box flex={1} minH={0} h="100%" overflow="hidden">
+            <Split className="split" minSize={50}>
+              <Box>
                 <Editor
                   theme={darkMode ? "vs-dark" : "vs"}
                   language="abc"
@@ -245,11 +247,10 @@ function EditorPage() {
                   }}
                 />
               </Box>
-
-              <Box flex={1}>
+              <Box overflowX="auto">
                 <div id="paper"></div>
               </Box>
-            </Flex>
+            </Split>
           </Box>
         </Flex>
       </Flex>
