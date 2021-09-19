@@ -40,7 +40,7 @@ function Score({ notes }: ScoreProps) {
         .init({
           audioContext: myContext,
           visualObj: visualObj[0],
-          millisecondsPerMeasure: 60000 / tempo,
+          millisecondsPerMeasure: 240000 / tempo, // assuming 4/4 but whatever
         })
         .then(() => {
           synth.prime().then(() => {
