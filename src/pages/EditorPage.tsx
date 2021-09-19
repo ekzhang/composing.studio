@@ -116,7 +116,12 @@ function EditorPage() {
   }
 
   function handleLoadSample() {
-    const samples = [raw("../music/fluteDuet.abc"), raw("../music/fugue.abc")];
+    const samples = [
+      raw("../music/fluteDuet.abc"),
+      raw("../music/fugue.abc"),
+      raw("../music/bartok.abc"),
+      raw("../music/twinkle.abc"),
+    ];
 
     if (editor?.getModel()) {
       const model = editor.getModel()!;
