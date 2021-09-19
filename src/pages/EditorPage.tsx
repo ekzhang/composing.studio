@@ -17,10 +17,17 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { VscChevronRight, VscFolderOpened, VscGist } from "react-icons/vsc";
+import {
+  VscChevronRight,
+  VscFolderOpened,
+  VscGist,
+  VscRepoPull,
+} from "react-icons/vsc";
+import { useDebounce } from "use-debounce";
 import useStorage from "use-local-storage-state";
 import Editor from "@monaco-editor/react";
 import type { editor } from "monaco-editor/esm/vs/editor/editor.api";
+import raw from "raw.macro";
 import animals from "../lib/animals.json";
 import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
@@ -108,7 +115,25 @@ function EditorPage() {
     setDarkMode(!darkMode);
   }
 
-  const [abcString, setAbcString] = useState("");
+  function handleLoadSample() {
+    if (editor?.getModel()) {
+      const model = editor.getModel()!;
+      model.pushEditOperations(
+        editor.getSelections(),
+        [
+          {
+            range: model.getFullModelRange(),
+            text: raw("../music/fluteDuet.abc"),
+          },
+        ],
+        () => null
+      );
+      editor.setPosition({ column: 0, lineNumber: 0 });
+    }
+  }
+
+  const [text, setText] = useState("");
+  const [abcString] = useDebounce(text, 100, { maxWait: 1000 });
 
   return (
     <Flex
@@ -190,7 +215,17 @@ function EditorPage() {
           </Heading>
           <Text fontSize="sm" mb={1.5}>
             <strong>Composing Studio</strong> is an open-source collaborative
-            music composition tool that lets anyone write music together.
+            web application that lets people write and engrave music together
+            using{" "}
+            <Link
+              color="blue.600"
+              fontWeight="semibold"
+              href="https://abcnotation.com/"
+              isExternal
+            >
+              ABC notation
+            </Link>
+            .
           </Text>
           <Text fontSize="sm" mb={1.5}>
             Share a link to this studio with others, and they'll be able to edit
@@ -208,6 +243,19 @@ function EditorPage() {
             </Link>{" "}
             for details.
           </Text>
+
+          <Button
+            size="sm"
+            colorScheme={darkMode ? "whiteAlpha" : "blackAlpha"}
+            borderColor={darkMode ? "purple.400" : "purple.600"}
+            color={darkMode ? "purple.400" : "purple.600"}
+            variant="outline"
+            leftIcon={<VscRepoPull />}
+            mt={1}
+            onClick={handleLoadSample}
+          >
+            Load an example
+          </Button>
         </Container>
         <Flex flex={1} minW={0} h="100%" direction="column" overflow="hidden">
           <HStack
@@ -234,11 +282,12 @@ function EditorPage() {
                   options={{
                     automaticLayout: true,
                     fontSize: 13,
+                    wordWrap: "on",
                   }}
                   onMount={(editor) => setEditor(editor)}
                   onChange={(text) => {
                     if (text !== undefined) {
-                      setAbcString(text);
+                      setText(text);
                     }
                   }}
                 />
