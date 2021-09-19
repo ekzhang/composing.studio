@@ -3,17 +3,19 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
-  GridItem,
+  Icon,
   Image,
+  SimpleGrid,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { HiChevronDoubleDown } from "react-icons/hi";
 import { VscArrowRight } from "react-icons/vsc";
 import { useHistory } from "react-router-dom";
 import generate from "project-name-generator";
 import { FullPage, Slide } from "react-full-page";
 import { Link } from "react-scroll";
+import LandingFeature from "../components/LandingFeature";
 
 function getRandomId() {
   return generate({ number: true }).dashed;
@@ -43,14 +45,8 @@ function LandingPage() {
     }, 500);
   }
 
-  const images = {
-    left: "path.png",
-    center: "path.png",
-    right: "path.png",
-  };
-
   return (
-    <FullPage className="overflow">
+    <FullPage>
       <Slide>
         <Flex w="100%" h="100vh" align="center" justify="center">
           <Stack>
@@ -66,6 +62,7 @@ function LandingPage() {
               textTransform="uppercase"
               fontSize="2xl"
               h={12}
+              mb={6}
               rightIcon={<VscArrowRight />}
               _hover={{ transform: "scale(1.1)", bgColor: "gray.50" }}
               onClick={handleClick}
@@ -74,134 +71,68 @@ function LandingPage() {
             >
               Enter
             </Button>
+            <Box h={12} />
             <Link to="info" smooth={true}>
               <Stack
-                _hover={{ bgColor: "gray.100" }}
-                opacity={showInfo ? 1 : 0}
                 position="absolute"
-                bottom="10%"
-                left="43%"
-                h={30}
+                w="md"
+                spacing={1}
+                p={3}
+                color="gray.600"
+                opacity={showInfo ? 1 : 0}
+                transition="opacity 0.5s"
+                bottom={3}
                 align="center"
                 fontWeight="semibold"
+                _hover={{ bgColor: "gray.50", cursor: "pointer" }}
               >
                 <Box fontSize="1em" textTransform="uppercase">
-                  Or scroll down for a demo
+                  Scroll to learn more
                 </Box>
-                <Box fontSize="5em">ˇ</Box>
+                <Icon as={HiChevronDoubleDown} fontSize="lg" />
               </Stack>
             </Link>
           </Stack>
         </Flex>
       </Slide>
       <Slide id="info">
-        <Flex w="100%" h="100vh" align="center" justify="center" bg="gray.100">
-          <Grid
-            h="75%"
-            w="75%"
-            templateRows="repeat(3, 1fr)"
-            templateColumns="repeat(6, 1fr)"
-            gap={10}
-          >
-            <GridItem rowSpan={2} colSpan={2}>
-              <Stack align="center">
-                <Box
-                  borderRadius="full"
-                  boxSize="150px"
-                  bg="gray.200"
-                  my={5}
-                  textAlign="center"
-                  fontSize="2em"
-                  fontWeight="semibold"
-                >
-                  Compose.
-                </Box>
-                <Image
-                  borderRadius="5%"
-                  src="/static/left.png"
-                  w="md"
-                  my={0}
-                  _hover={{ transform: "scale(2)" }}
-                />
-              </Stack>
-            </GridItem>
-            <GridItem rowSpan={2} colSpan={2}>
-              <Stack align="center">
-                <Box
-                  borderRadius="full"
-                  boxSize="150px"
-                  bg="gray.200"
-                  my={5}
-                  textAlign="center"
-                  fontSize="2em"
-                  fontWeight="semibold"
-                >
-                  Play.
-                </Box>
-                <Image
-                  borderRadius="5%"
-                  src="/static/center.png"
-                  w="md"
-                  my={0}
-                />
-              </Stack>
-            </GridItem>
-            <GridItem rowSpan={2} colSpan={2}>
-              <Stack align="center">
-                <Box
-                  borderRadius="full"
-                  boxSize="150px"
-                  bg="gray.200"
-                  my={5}
-                  textAlign="center"
-                  fontSize="2em"
-                  fontWeight="semibold"
-                >
-                  Share
-                </Box>
-                <Image
-                  borderRadius="5%"
-                  src="/static/right.png"
-                  w="md"
-                  my={0}
-                />
-              </Stack>
-            </GridItem>
-            <GridItem rowStart={3} colSpan={6}>
-              <Stack>
-                <Box
-                  left="50%"
-                  align="center"
-                  fontSize="1em"
-                  mt={0}
-                  fontWeight="semibold"
-                  textTransform="uppercase"
-                >
-                  Make Music Together.
-                </Box>
-                <Button
-                  size="lg"
-                  variant="ghost"
-                  fontSize="2xl"
-                  h={12}
-                  w="25%"
-                  left="37.5%"
-                  right="37.5%"
-                  top="50%"
-                  rightIcon={<VscArrowRight />}
-                  _hover={{ transform: "scale(1.1)", bgColor: "gray.50" }}
-                  onClick={handleClick}
-                  isLoading={loading}
-                  opacity={showButton ? 1 : 0}
-                  color="white"
-                  bg="gray.700"
-                  textTransform="uppercase"
-                >
-                  Start Creating
-                </Button>
-              </Stack>
-            </GridItem>
-          </Grid>
+        <Flex
+          h="100vh"
+          direction="column"
+          align="center"
+          justify="center"
+          bgColor="gray.50"
+        >
+          <SimpleGrid columns={3} spacing={8} my={6}>
+            <LandingFeature title="Compose" image="/static/left.png" />
+            <LandingFeature title="Preview" image="/static/center.png" />
+            <LandingFeature title="Collaborate" image="/static/right.png" />
+          </SimpleGrid>
+          <Stack w="md">
+            <Text
+              align="center"
+              fontSize="lg"
+              mt={8}
+              mb={3}
+              fontWeight="semibold"
+              textTransform="uppercase"
+            >
+              Make music together.
+            </Text>
+            <Button
+              size="lg"
+              colorScheme="blue"
+              fontSize="2xl"
+              textTransform="uppercase"
+              h={14}
+              rightIcon={<VscArrowRight />}
+              onClick={handleClick}
+              isLoading={loading}
+              opacity={showButton ? 1 : 0}
+            >
+              Start creating
+            </Button>
+          </Stack>
         </Flex>
       </Slide>
     </FullPage>
