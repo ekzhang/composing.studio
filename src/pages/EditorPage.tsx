@@ -215,7 +215,17 @@ function EditorPage() {
           </Heading>
           <Text fontSize="sm" mb={1.5}>
             <strong>Composing Studio</strong> is an open-source collaborative
-            music composition tool that lets people write music together.
+            web application that lets people write and engrave music together
+            using{" "}
+            <Link
+              color="blue.600"
+              fontWeight="semibold"
+              href="https://abcnotation.com/"
+              isExternal
+            >
+              ABC notation
+            </Link>
+            .
           </Text>
           <Text fontSize="sm" mb={1.5}>
             Share a link to this studio with others, and they'll be able to edit
