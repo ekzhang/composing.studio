@@ -22,7 +22,7 @@ function Score({ notes }: ScoreProps) {
   myContext.resume();
 
   useEffect(() => {
-    let visualObj = abcjs.renderAbc("paper", notes, {});
+    let visualObj = abcjs.renderAbc("paper", notes, { responsive: "resize" });
 
     if (beginPlaying) {
       // some funky logic bc we can't tell if a play is in progress
