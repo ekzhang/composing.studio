@@ -1,0 +1,36 @@
+X:1
+T:Little Fugue in G Minor
+M:4/4
+C:J. S. Bach
+Z:Jeff Bigler
+Q:1/4=72
+L:1/16
+K:Gm
+V:1 nm="Violin 1"
+!f! G4 d4 B6 A2 |\
+G2B2A2G2 (^F2A2) D4 |\
+G2D2A2D2 B2AG A2D2 |\
+G2DG A2DA B2AG ADdc |
+BAGB AG^FA GDGA Bcd=e |\
+!mf! =f=edf ed^ce d2A2d2e2 |\
+(vfg)ufvg (uTg3f/2g/2) agab agf=e |
+faga ^caga daga caga |\
+fd^cd gdcd adcd gdcd |\
+!mp! A2f2G2=e2 F2A2d2f2 |
+!p! _e2a2 z2 e2 d2g2 z2 d2 "A"|\
+!mf! cBcd caga Bg^fg Af=ef |\
+[dg]16|]
+V:2 nm="Violin 2"
+z16 |\
+z16 |\
+z16 |\
+z16 |
+z16 |\
+!f! d4 a4 f6 =e2 |\
+d2f2=e2d2 (^c2e2) A4 |
+d2A2=e2A2 f2ed e2A2 |\
+d2Ad =e2Ae f2ed eAag |\
+f=edf ed^ce dAde fga=b |
+!mf! c'_bc'd' c'bac' babc' bagb |\
+a2g2^f2d2 !f! G4 d4 |\
+[G_B]16|]

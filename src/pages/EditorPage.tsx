@@ -116,6 +116,11 @@ function EditorPage() {
   }
 
   function handleLoadSample() {
+    const samples = [
+      raw("../music/fluteDuet.abc"),
+      raw("../music/fugue.abc"),
+    ];
+
     if (editor?.getModel()) {
       const model = editor.getModel()!;
       model.pushEditOperations(
@@ -123,7 +128,7 @@ function EditorPage() {
         [
           {
             range: model.getFullModelRange(),
-            text: raw("../music/fluteDuet.abc"),
+            text: samples[Math.floor(Math.random() * samples.length)],
           },
         ],
         () => null
