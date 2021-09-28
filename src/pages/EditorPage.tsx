@@ -34,7 +34,6 @@ import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
 import User from "../components/User";
 import Score from "../components/Score";
-import ProductHunt from "../components/ProductHunt";
 import Split from "react-split";
 import "./Split.css";
 
@@ -310,8 +309,6 @@ function EditorPage() {
         </Flex>
       </Flex>
       <Footer />
-
-      <ProductHunt />
     </Flex>
   );
 }
