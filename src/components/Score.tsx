@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Box, Stack } from "@chakra-ui/react";
 import abcjs from "abcjs";
+import { nanoid } from "nanoid";
 import "abcjs/abcjs-audio.css";
 
 class CursorControl {
@@ -71,60 +72,74 @@ class CursorControl {
   }
 }
 
-const synth = new abcjs.synth.CreateSynth();
-const synthControl = new abcjs.synth.SynthController();
-const cursorControl = new CursorControl("#paper");
-
 type ScoreProps = {
   notes: string;
   darkMode: boolean;
 };
 
 function Score({ notes, darkMode }: ScoreProps) {
+  const ref = useRef<any>(null);
+  if (ref.current === null) {
+    const id = nanoid();
+    ref.current = {
+      id,
+      synth: new abcjs.synth.CreateSynth(),
+      synthControl: new abcjs.synth.SynthController(),
+      cursorControl: new CursorControl(`#paper-${id}`),
+    };
+  }
+
   useEffect(() => {
-    synthControl.load("#audio", cursorControl, {
-      displayLoop: true,
-      displayRestart: true,
-      displayPlay: true,
-      displayProgress: true,
-      displayWarp: true,
-    });
+    ref.current.synthControl.load(
+      `#audio-${ref.current.id}`,
+      ref.current.cursorControl,
+      {
+        displayLoop: true,
+        displayRestart: true,
+        displayPlay: true,
+        displayProgress: true,
+        displayWarp: true,
+      }
+    );
   }, []);
 
   useEffect(() => {
-    let visualObj = abcjs.renderAbc("paper", notes, {
-      responsive: "resize",
-      add_classes: true,
-    });
-
-    synth
-      .init({ visualObj: visualObj[0] })
-      .then(function () {
-        synthControl
-          .setTune(visualObj[0], false, { chordsOff: false })
-          .then(function () {
-            console.log("Audio successfully loaded.");
-          })
-          .catch(function (error: any) {
-            console.warn("Audio problem:", error);
-          });
-      })
-      .catch(function (error: any) {
-        console.warn("Audio problem:", error);
+    try {
+      let visualObj = abcjs.renderAbc(`paper-${ref.current.id}`, notes, {
+        responsive: "resize",
+        add_classes: true,
       });
+
+      ref.current.synth
+        .init({ visualObj: visualObj[0] })
+        .then(function () {
+          ref.current.synthControl
+            .setTune(visualObj[0], false, { chordsOff: false })
+            .then(function () {
+              console.log("Audio successfully loaded.");
+            })
+            .catch(function (error: any) {
+              console.warn("Audio problem:", error);
+            });
+        })
+        .catch(function (error: any) {
+          console.warn("Audio problem:", error);
+        });
+    } catch (error) {
+      console.warn("Error when running Abcjs:", error);
+    }
   }, [notes]);
 
-  // TODO: Make this component reusable by generating random unique IDs.
   return (
     <Stack p={3}>
       <Box
-        id="paper"
+        id={`paper-${ref.current.id}`}
         borderWidth="1px"
         borderColor="gray.500"
         rounded="sm"
         bgColor={darkMode ? "whiteAlpha.900" : "initial"}
       />
-      <Box id="audio" />
+      <Box id={`audio-${ref.current.id}`} />
     </Stack>
   );
 }
