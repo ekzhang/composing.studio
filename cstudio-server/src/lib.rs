@@ -68,8 +68,8 @@ pub fn server(config: ServerConfig) -> BoxedFilter<(impl Reply,)> {
 
 /// Construct routes for static files from React.
 fn frontend() -> BoxedFilter<(impl Reply,)> {
-    warp::fs::dir("build")
-        .or(warp::fs::file("build/index.html"))
+    warp::fs::dir("dist")
+        .or(warp::fs::file("dist/index.html"))
         .boxed()
 }
 

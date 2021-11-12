@@ -1,10 +1,8 @@
-import { set_panic_hook } from "cstudio-wasm";
 import { loader } from "@monaco-editor/react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import EditorPage from "./pages/EditorPage";
 
-set_panic_hook();
 initAbc();
 
 async function initAbc() {
@@ -60,12 +58,12 @@ async function initAbc() {
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={LandingPage} />
-        <Route exact path="/:id" component={EditorPage} />
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/:id" element={<EditorPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

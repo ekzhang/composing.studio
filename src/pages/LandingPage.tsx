@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { HiChevronDoubleDown } from "react-icons/hi";
 import { VscArrowRight } from "react-icons/vsc";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import generate from "project-name-generator";
 import { FullPage, Slide } from "react-full-page";
 import { Link } from "react-scroll";
@@ -22,7 +22,7 @@ function getRandomId() {
 }
 
 function LandingPage() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const [showLogo, setShowLogo] = useState(false);
@@ -41,7 +41,7 @@ function LandingPage() {
     // Arbitrary delay for suspense reasons.
     setTimeout(() => {
       const id = getRandomId();
-      history.push(`/${id}`);
+      navigate(`/${id}`);
     }, 500);
   }
 

@@ -27,13 +27,16 @@ import { useDebounce } from "use-debounce";
 import useStorage from "use-local-storage-state";
 import Editor from "@monaco-editor/react";
 import type { editor } from "monaco-editor/esm/vs/editor/editor.api";
-import raw from "raw.macro";
 import animals from "../lib/animals.json";
 import Rustpad, { UserInfo } from "../lib/rustpad";
 import ConnectionStatus from "../components/ConnectionStatus";
 import Footer from "../components/Footer";
 import User from "../components/User";
 import Score from "../components/Score";
+import fluteDuetAbc from "../music/fluteDuet.abc?raw";
+import fugueAbc from "../music/fugue.abc?raw";
+import bartokAbc from "../music/bartok.abc?raw";
+import twinkleAbc from "../music/twinkle.abc?raw";
 import Split from "react-split";
 import "./Split.css";
 
@@ -64,7 +67,7 @@ function EditorPage() {
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor>();
   const [darkMode, setDarkMode] = useStorage("darkMode", () => false);
   const rustpad = useRef<Rustpad>();
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<string>();
 
   useEffect(() => {
     if (editor?.getModel()) {
@@ -72,7 +75,7 @@ function EditorPage() {
       model.setValue("");
       model.setEOL(0); // LF
       rustpad.current = new Rustpad({
-        uri: getWsUri(id),
+        uri: getWsUri(id!),
         editor,
         onConnected: () => setConnection("connected"),
         onDisconnected: () => setConnection("disconnected"),
@@ -116,12 +119,7 @@ function EditorPage() {
   }
 
   function handleLoadSample() {
-    const samples = [
-      raw("../music/fluteDuet.abc"),
-      raw("../music/fugue.abc"),
-      raw("../music/bartok.abc"),
-      raw("../music/twinkle.abc"),
-    ];
+    const samples = [fluteDuetAbc, fugueAbc, bartokAbc, twinkleAbc];
 
     if (editor?.getModel()) {
       const model = editor.getModel()!;
