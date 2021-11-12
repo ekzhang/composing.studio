@@ -21,7 +21,7 @@ COPY . .
 RUN npm run build
 
 FROM scratch
-COPY --from=frontend /usr/src/app/build build
+COPY --from=frontend /usr/src/app/dist dist
 COPY --from=backend /home/rust/src/target/release/cstudio-server .
 USER 1000:1000
 CMD [ "./cstudio-server" ]
