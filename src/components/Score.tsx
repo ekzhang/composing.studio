@@ -125,7 +125,9 @@ function Score({ notes, darkMode }: ScoreProps) {
         .catch(function (error: any) {
           console.warn("Audio problem:", error);
         });
-    } catch (error) {}
+    } catch (error) {
+      console.warn("Error when running Abcjs:", error);
+    }
   }, [notes]);
 
   return (
