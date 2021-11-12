@@ -1,4 +1,4 @@
-FROM ekidd/rust-musl-builder:latest as backend
+FROM rust:alpine as backend
 WORKDIR /home/rust/src
 RUN apk --no-cache add musl-dev openssl-dev
 COPY . .
