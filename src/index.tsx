@@ -5,7 +5,6 @@ import init, { set_panic_hook } from "cstudio-wasm";
 import App from "./App";
 import "./index.css";
 
-// An asynchronous entry point is needed to load WebAssembly files.
 init().then(() => {
   set_panic_hook();
   ReactDOM.render(
