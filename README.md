@@ -67,7 +67,7 @@ While the backend is running, open another shell and run the following command
 to start the frontend portion.
 
 ```
-npm start
+npm run dev
 ```
 
 This command will open a browser window to `http://localhost:3000`, with hot
