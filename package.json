@@ -17,6 +17,7 @@
     "cstudio-wasm": "file:./cstudio-wasm/pkg",
     "framer-motion": "^4.1.17",
     "lodash.debounce": "^4.0.8",
+    "nanoid": "^3.1.30",
     "project-name-generator": "^2.1.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
