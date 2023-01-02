@@ -112,7 +112,7 @@ fn backend(config: ServerConfig) -> BoxedFilter<(impl Reply,)> {
         .as_secs();
     let stats = warp::path("stats")
         .and(warp::path::end())
-        .and(state_filter.clone())
+        .and(state_filter)
         .map(move |state: Arc<DashMap<String, Document>>| {
             let num_documents = state.len();
             warp::reply::json(&Stats {
