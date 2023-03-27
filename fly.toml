@@ -13,6 +13,11 @@ processes = []
   processes = ["app"]
   protocol = "tcp"
 
+  [services.concurrency]
+    hard_limit = 65536
+    soft_limit = 1024
+    type = "connections"
+
   [[services.ports]]
     handlers = ["http"]
     port = 80
